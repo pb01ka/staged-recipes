@@ -55,6 +55,16 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Building for macOS..."
     pnpm electron-builder build --config .electron-builder.config.cjs --mac --dir --publish never --config.npmRebuild=false
+
+    echo "=== Code signing the app bundle ==="
+    # Ad-hoc signature (--sign -) lets macOS run the app without Gatekeeper blocking it
+    if [ -d "dist/mac/Podman Desktop.app" ]; then
+        codesign --force --deep --sign - "dist/mac/Podman Desktop.app"
+    elif [ -d "dist/mac-arm64/Podman Desktop.app" ]; then
+        codesign --force --deep --sign - "dist/mac-arm64/Podman Desktop.app"
+    else
+        echo "WARNING: No .app bundle found to sign"
+    fi
 else
     echo "ERROR: Unsupported platform: $OSTYPE"
     exit 1

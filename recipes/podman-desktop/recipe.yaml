@@ -3,7 +3,7 @@ schema_version: 1
 
 context:
   name: podman-desktop
-  version: "1.24.2"
+  version: "1.26.2"
   nodejs_min: "24"
 
 package:
@@ -11,8 +11,8 @@ package:
   version: ${{ version }}
 
 source:
-  url: https://github.com/podman-desktop/podman-desktop/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: b14e5a46e348996387e6cced27789f10c95a0791c9a1cadb2c60382e9e1ed2fd
+  git: https://github.com/podman-desktop/podman-desktop
+  tag: v${{ version }}
 
 build:
   number: 0

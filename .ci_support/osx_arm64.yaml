@@ -5,9 +5,9 @@ cxx_compiler:
 c_stdlib:
   - macosx_deployment_target
 c_stdlib_version:
-  - 11.0
+  - 26.0
 MACOSX_DEPLOYMENT_TARGET:
-  - 11.0
+  - 26.0
 fortran_compiler:
   - gfortran
 go_compiler:

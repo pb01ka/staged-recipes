@@ -10,13 +10,9 @@ echo PWD: %CD%
 node --version
 if errorlevel 1 exit /b 1
 
-echo === Setting up pnpm via corepack ===
-:: Enable corepack (bundled with Node.js 24+)
-call corepack enable
-if errorlevel 1 exit /b 1
-
-:: Prepare specific pnpm version used by Podman Desktop
-call corepack prepare pnpm@10.20.0 --activate
+echo === Installing pnpm via npm ===
+:: conda-forge nodejs does not ship corepack; install pnpm directly
+call npm install -g pnpm@10.20.0
 if errorlevel 1 exit /b 1
 
 :: Verify pnpm is available
@@ -110,13 +106,13 @@ if not exist "%SCRIPTS%" mkdir "%SCRIPTS%"
 echo @echo off
 echo :: Podman Desktop launcher script
 echo :: Execute the Electron app from lib directory
-echo start "" "%%LIBRARY_PREFIX%%\lib\podman-desktop\Podman Desktop.exe" %%*
+echo start "" "%%LIBRARY_PREFIX%%\Library\lib\podman-desktop\Podman Desktop.exe" %%*
 ) > "%SCRIPTS%\podman-desktop.bat"
 
 echo === Build completed successfully! ===
 echo Installed files:
 dir "%SCRIPTS%\podman-desktop.bat"
 echo Contents of lib\podman-desktop:
-dir "%LIBRARY_PREFIX%\lib\podman-desktop" | findstr /C:"exe"
+dir "%LIBRARY_PREFIX%\Library\lib\podman-desktop" | findstr /C:"exe"
 
 exit /b 0
