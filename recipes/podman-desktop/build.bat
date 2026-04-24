@@ -79,8 +79,7 @@ echo Checking dist directory contents:
 dir /B dist
 
 :: Install Electron app bundle
-if not exist "%LIBRARY_PREFIX%\lib" mkdir "%LIBRARY_PREFIX%\lib"
-if not exist "%LIBRARY_PREFIX%\lib\podman-desktop" mkdir "%LIBRARY_PREFIX%\lib\podman-desktop"
+mkdir "%LIBRARY_PREFIX%\lib\podman-desktop"
 
 :: Copy all files from win-unpacked to installation directory
 echo Copying from dist\win-unpacked to %LIBRARY_PREFIX%\lib\podman-desktop
@@ -94,7 +93,7 @@ if errorlevel 1 (
 
 echo === Creating launcher script ===
 :: Create wrapper batch file in Scripts/
-if not exist "%SCRIPTS%" mkdir "%SCRIPTS%"
+mkdir "%SCRIPTS%"
 
 :: Create launcher batch file (use quotes around exe path due to spaces)
 (

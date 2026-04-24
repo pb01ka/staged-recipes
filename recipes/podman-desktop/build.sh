@@ -1,21 +1,10 @@
 #!/bin/bash
 set -euxo pipefail
 
-# Remember source directory (handle both conda-build and rattler-build)
-if [ -n "${SRC_DIR}" ]; then
-    SRC_ROOT="${SRC_DIR}"
-else
-    SRC_ROOT="$(pwd)"
-fi
-
 echo "=== Build environment ==="
-echo "SRC_ROOT: ${SRC_ROOT}"
 echo "PREFIX: ${PREFIX}"
 echo "PWD: $(pwd)"
 echo "Node version: $(node --version)"
-
-# Navigate to source directory
-cd "${SRC_ROOT}"
 
 # Verify pnpm is available (provided as a build dependency via conda-forge)
 pnpm --version
@@ -57,7 +46,8 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     elif [ -d "dist/mac-arm64/Podman Desktop.app" ]; then
         codesign --force --deep --sign - "dist/mac-arm64/Podman Desktop.app"
     else
-        echo "WARNING: No .app bundle found to sign"
+        echo "ERROR: No .app bundle found to sign"
+        exit 1
     fi
 else
     echo "ERROR: Unsupported platform: $OSTYPE"
@@ -72,8 +62,8 @@ pnpm licenses generate-disclaimer --prod > ThirdPartyNotices.txt || {
 }
 
 # Verify license files exist
-ls -la "${SRC_ROOT}/LICENSE"
-ls -la "${SRC_ROOT}/ThirdPartyNotices.txt"
+[[ -f LICENSE ]]
+[[ -f ThirdPartyNotices.txt ]]
 
 echo "=== Installing Podman Desktop to PREFIX ==="
 # Install Electron app bundle (platform-specific)
@@ -117,7 +107,8 @@ EOF
     elif [ -f "buildResources/512x512.png" ]; then
         cp "buildResources/512x512.png" "${PREFIX}/share/icons/hicolor/512x512/apps/podman-desktop.png"
     else
-        echo "WARNING: Icon file not found in buildResources/"
+        echo "ERROR: Icon file not found in buildResources/"
+        exit 1
     fi
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
