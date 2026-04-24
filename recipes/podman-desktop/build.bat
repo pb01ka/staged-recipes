@@ -10,12 +10,7 @@ echo PWD: %CD%
 node --version
 if errorlevel 1 exit /b 1
 
-echo === Installing pnpm via npm ===
-:: conda-forge nodejs does not ship corepack; install pnpm directly
-call npm install -g pnpm@10.20.0
-if errorlevel 1 exit /b 1
-
-:: Verify pnpm is available
+:: Verify pnpm is available (provided as a build dependency via conda-forge)
 call pnpm --version
 if errorlevel 1 exit /b 1
 

@@ -17,13 +17,7 @@ echo "Node version: $(node --version)"
 # Navigate to source directory
 cd "${SRC_ROOT}"
 
-echo "=== Setting up pnpm via corepack ==="
-# Enable corepack (bundled with Node.js 24+)
-corepack enable
-# Prepare specific pnpm version used by Podman Desktop
-corepack prepare pnpm@10.20.0 --activate
-
-# Verify pnpm is available
+# Verify pnpm is available (provided as a build dependency via conda-forge)
 pnpm --version
 
 echo "=== Configuring build environment ==="
